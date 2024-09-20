@@ -230,7 +230,7 @@ func makeDescMap(metricMaps map[string]map[string]ColumnMapping, meter metric.Me
 				}
 			case COUNTER:
 				counterMertic, err := meter.Int64Counter(
-						fmt.Sprintf("%s_%s", metricNamespace, columnName),
+						fmt.Sprintf("pgpool2_%s_%s", metricNamespace, columnName),
 						metric.WithDescription(columnMapping.description),
 				)
 				if err != nil {
@@ -242,7 +242,7 @@ func makeDescMap(metricMaps map[string]map[string]ColumnMapping, meter metric.Me
 				}
 			case GAUGE:
 				gaugeMetric, err := meter.Float64Gauge(
-					fmt.Sprintf("%s_%s", metricNamespace, columnName),
+					fmt.Sprintf("pgpool2_%s_%s", metricNamespace, columnName),
 					metric.WithDescription(columnMapping.description),
 			)
 				if err != nil {
@@ -701,7 +701,7 @@ func (e *Exporter) SetMetrics() {
 	}
 
 	duration, err := e.meter.Float64Gauge(
-					"last_scrape_duration_seconds",
+					"pgpool2_last_scrape_duration_seconds",
 					metric.WithDescription("Duration of the last scrape of metrics from Pgpool-II."),
 	)
 
@@ -710,7 +710,7 @@ func (e *Exporter) SetMetrics() {
 	}
 
 	totalScrapes, err := e.meter.Int64Counter(
-					"scrapes_total",
+					"pgpool2_scrapes_total",
 					metric.WithDescription("Total number of times Pgpool-II has been scraped for metrics."),
 	)
 
@@ -719,7 +719,7 @@ func (e *Exporter) SetMetrics() {
 	}
 
 	error, err := e.meter.Float64Gauge(
-				"last_scrape_error",
+				"pgpool2_last_scrape_error",
 				metric.WithDescription("Whether the last scrape of metrics from Pgpool-II resulted in an error (1 for error, 0 for success)."),
 	)
 
