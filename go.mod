@@ -1,4 +1,4 @@
-module github.com/pgpool/pgpool2_exporter
+module github.com/VincentHokie/pgpool2_exporter
 
 go 1.22
 
@@ -17,6 +17,7 @@ require (
 
 require (
 	github.com/alecthomas/kingpin/v2 v2.4.0
+	github.com/pgpool/pgpool2_exporter v1.2.2
 	go.opentelemetry.io/otel v1.30.0
 	go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp v1.30.0
 	go.opentelemetry.io/otel/metric v1.30.0

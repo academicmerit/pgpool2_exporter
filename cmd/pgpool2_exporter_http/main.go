@@ -21,7 +21,7 @@ import (
     "go.opentelemetry.io/otel/attribute"
     "go.opentelemetry.io/otel/sdk/metric"
 
-    httpexp "github.com/pgpool/pgpool2_exporter"
+    httpexp "github.com/VincentHokie/pgpool2_exporter"
 )
 
 // Pgpool-II version
