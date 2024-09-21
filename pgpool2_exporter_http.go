@@ -146,7 +146,7 @@ var (
 			"port":              {LABEL, "Backend port"},
 			"role":              {LABEL, "Role (primary or standby)"},
 			"status":            {GAUGE, "Backend node Status (1 for up or waiting, 0 for down or unused)"},
-			"select_cnt":        {COUNTER, "SELECT statement counts issued to each backend"},
+			"select_cnt":        {GAUGE, "SELECT statement counts issued to each backend"},
 			"replication_delay": {GAUGE, "Replication delay"},
 		},
 		"pool_backend_stats": {
@@ -154,44 +154,52 @@ var (
 			"port":       {LABEL, "Backend port"},
 			"role":       {LABEL, "Role (primary or standby)"},
 			"status":     {GAUGE, "Backend node Status (1 for up or waiting, 0 for down or unused)"},
-			"select_cnt": {COUNTER, "SELECT statement counts issued to each backend"},
-			"insert_cnt": {COUNTER, "INSERT statement counts issued to each backend"},
-			"update_cnt": {COUNTER, "UPDATE statement counts issued to each backend"},
-			"delete_cnt": {COUNTER, "DELETE statement counts issued to each backend"},
-			"ddl_cnt":    {COUNTER, "DDL statement counts issued to each backend"},
-			"other_cnt":  {COUNTER, "other statement counts issued to each backend"},
-			"panic_cnt":  {COUNTER, "Panic message counts returned from backend"},
-			"fatal_cnt":  {COUNTER, "Fatal message counts returned from backend)"},
-			"error_cnt":  {COUNTER, "Error message counts returned from backend"},
+			"select_cnt": {GAUGE, "SELECT statement counts issued to each backend"},
+			"insert_cnt": {GAUGE, "INSERT statement counts issued to each backend"},
+			"update_cnt": {GAUGE, "UPDATE statement counts issued to each backend"},
+			"delete_cnt": {GAUGE, "DELETE statement counts issued to each backend"},
+			"ddl_cnt":    {GAUGE, "DDL statement counts issued to each backend"},
+			"other_cnt":  {GAUGE, "other statement counts issued to each backend"},
+			"panic_cnt":  {GAUGE, "Panic message counts returned from backend"},
+			"fatal_cnt":  {GAUGE, "Fatal message counts returned from backend)"},
+			"error_cnt":  {GAUGE, "Error message counts returned from backend"},
 		},
 		"pool_health_check_stats": {
-			"hostname":            {LABEL, "Backend hostname"},
-			"port":                {LABEL, "Backend port"},
-			"role":                {LABEL, "Role (primary or standby)"},
-			"status":              {GAUGE, "Backend node Status (1 for up or waiting, 0 for down or unused)"},
-			"total_count":         {GAUGE, "Number of health check count in total"},
-			"success_count":       {GAUGE, "Number of successful health check count in total"},
-			"fail_count":          {GAUGE, "Number of failed health check count in total"},
-			"skip_count":          {GAUGE, "Number of skipped health check count in total"},
-			"retry_count":         {GAUGE, "Number of retried health check count in total"},
-			"average_retry_count": {GAUGE, "Number of average retried health check count in a health check session"},
-			"max_retry_count":     {GAUGE, "Number of maximum retried health check count in a health check session"},
-			"max_duration":        {GAUGE, "Maximum health check duration in Millie seconds"},
-			"min_duration":        {GAUGE, "Minimum health check duration in Millie seconds"},
-			"average_duration":    {GAUGE, "Average health check duration in Millie seconds"},
-			// last_status_change
-			// last_health_check
-			// last_successful_health_check
-			// last_skip_health_check
-			// last_failed_health_check
+			"hostname":            					{LABEL, "Backend hostname"},
+			"port":                					{LABEL, "Backend port"},
+			"role":                					{LABEL, "Role (primary or standby)"},
+			"status":              					{GAUGE, "Backend node Status (1 for up or waiting, 0 for down or unused)"},
+			"total_count":         					{GAUGE, "Number of health check count in total"},
+			"success_count":       					{GAUGE, "Number of successful health check count in total"},
+			"fail_count":          					{GAUGE, "Number of failed health check count in total"},
+			"skip_count":          					{GAUGE, "Number of skipped health check count in total"},
+			"retry_count":         					{GAUGE, "Number of retried health check count in total"},
+			"average_retry_count": 					{GAUGE, "Number of average retried health check count in a health check session"},
+			"max_retry_count":     					{GAUGE, "Number of maximum retried health check count in a health check session"},
+			"max_duration":        					{GAUGE, "Maximum health check duration in Millie seconds"},
+			"min_duration":        					{GAUGE, "Minimum health check duration in Millie seconds"},
+			"average_duration":    					{GAUGE, "Average health check duration in Millie seconds"},
+			"last_health_check":     				{GAUGE, "Time in seconds from the last healthcheck"},
+			"last_successful_health_check": {GAUGE, "Time in seconds from the last successful healthcheck"},
+			"last_skip_health_check":       {GAUGE, "Time in seconds from the last skipped healthcheck"},
+			"last_failed_health_check":    	{GAUGE, "Time in seconds from the last failed healthcheck"},
 		},
-		// "pool_processes": {
-		// 	"pool_pid": {DISCARD, "PID of Pgpool-II child processes"},
-		// 	"database": {DISCARD, "Database name of the currently active backend connection"},
-		// },
-		// "pool_pools": {
-		// 	"pool_pid": {DISCARD, "PID of Pgpool-II child processes"},
-		// },
+		"pool_processes": {
+			"pool_pid": 		 		 	 {DISCARD, "PID of Pgpool-II child processes"},
+			"database": 		 		 	 {DISCARD, "Database name of the currently active backend connection"},
+			"frontend_used": 		 	 {GAUGE, "Number of used child processes"},
+			"frontend_total": 		 {GAUGE, "Number of total child processed"},
+			"frontend_used_ratio": {GAUGE, "Ratio of child processes to total processes"},
+		},
+		"pool_pools": {
+			"pool_pid": 							 			 {DISCARD, "PID of Pgpool-II child processes"},
+			"backend_by_process_used": 			 {GAUGE, "Number of backend connection slots in use"},
+			"backend_by_process_used_ratio": {GAUGE, "Number of backend connection slots in use"},
+			"backend_by_process_total": 		 {GAUGE, "Number of backend connection slots in use"},
+			"backend_total": 								 {GAUGE, "Number of total possible backend connection slots"},
+			"backend_used": 								 {GAUGE, "Number of backend connection slots in use"},
+			"backend_used_ratio": 					 {GAUGE, "Ratio of backend connections in use to total backend connection slots"},
+		},
 		"pool_cache": {
 			"num_cache_hits":              {GAUGE, "The number of hits against the query cache"},
 			"num_selects":                 {GAUGE, "The number of SELECT that did not hit against the query cache"},
@@ -328,179 +336,201 @@ func queryNamespaceMapping(ctx context.Context, db *sql.DB, namespace string, ma
 	// Read from the result of "SHOW pool_pools"
 	if namespace == "pool_pools" {
 
-		// totalBackends := float64(0)
-		// totalBackendsInUse := float64(0)
+		totalBackends := float64(0)
+		totalBackendsInUse := float64(0)
 
-		// // pool_pid -> pool_id -> backend_id ->username -> database -> count
-		// backendsInUse := make(map[string]map[string]map[string]map[string]map[string]float64)
+		// pool_pid -> pool_id -> backend_id ->username -> database -> count
+		backendsInUse := make(map[string]map[string]map[string]map[string]map[string]float64)
 
-		// totalBackendsByProcess := make(map[string]float64)
+		totalBackendsByProcess := make(map[string]float64)
 
-		// for rows.Next() {
-		// 	err = rows.Scan(scanArgs...)
-		// 	if err != nil {
-		// 		return []error{}, errors.New(fmt.Sprintln("Error retrieving rows:", namespace, err))
-		// 	}
-		// 	var valueDatabase string
-		// 	var valueUsername string
-		// 	var valuePoolPid string
-		// 	var valuePoolId string
-		// 	var valueBackendId string
-		// 	for idx, columnName := range columnNames {
-		// 		switch columnName {
-		// 		case "pool_pid":
-		// 			valuePoolPid, _ = exp.dbToString(columnData[idx])
-		// 		case "pool_id":
-		// 			valuePoolId, _ = exp.dbToString(columnData[idx])
-		// 		case "backend_id":
-		// 			valueBackendId, _ = exp.dbToString(columnData[idx])
-		// 		case "database":
-		// 			valueDatabase, _ = exp.dbToString(columnData[idx])
-		// 		case "username":
-		// 			valueUsername, _ = exp.dbToString(columnData[idx])
-		// 		}
-		// 	}
-		// 	if len(valuePoolPid) > 0 {
-		// 		totalBackends++
-		// 		totalBackendsByProcess[valuePoolPid]++
-		// 	}
-		// 	if len(valueUsername) > 0 {
-		// 		totalBackendsInUse++
-		// 		_, ok := backendsInUse[valuePoolPid]
-		// 		if !ok {
-		// 			backendsInUse[valuePoolPid] = make(map[string]map[string]map[string]map[string]float64)
-		// 		}
-		// 		_, ok = backendsInUse[valuePoolPid][valuePoolId]
-		// 		if !ok {
-		// 			backendsInUse[valuePoolPid][valuePoolId] = make(map[string]map[string]map[string]float64)
-		// 		}
-		// 		_, ok = backendsInUse[valuePoolPid][valuePoolId][valueBackendId]
-		// 		if !ok {
-		// 			backendsInUse[valuePoolPid][valuePoolId][valueBackendId] = make(map[string]map[string]float64)
-		// 		}
-		// 		_, ok = backendsInUse[valuePoolPid][valuePoolId][valueBackendId][valueUsername]
-		// 		if !ok {
-		// 			backendsInUse[valuePoolPid][valuePoolId][valueBackendId][valueUsername] = make(map[string]float64)
-		// 		}
-		// 		backendsInUse[valuePoolPid][valuePoolId][valueBackendId][valueUsername][valueDatabase]++
-		// 	}
-		// }
+		for rows.Next() {
+			err = rows.Scan(scanArgs...)
+			if err != nil {
+				return []error{}, errors.New(fmt.Sprintln("Error retrieving rows:", namespace, err))
+			}
+			var valueDatabase string
+			var valueUsername string
+			var valuePoolPid string
+			var valuePoolId string
+			var valueBackendId string
+			for idx, columnName := range columnNames {
+				switch columnName {
+				case "pool_pid":
+					valuePoolPid, _ = dbToString(columnData[idx])
+				case "pool_id":
+					valuePoolId, _ = dbToString(columnData[idx])
+				case "backend_id":
+					valueBackendId, _ = dbToString(columnData[idx])
+				case "database":
+					valueDatabase, _ = dbToString(columnData[idx])
+				case "username":
+					valueUsername, _ = dbToString(columnData[idx])
+				}
+			}
+			if len(valuePoolPid) > 0 {
+				totalBackends++
+				totalBackendsByProcess[valuePoolPid]++
+			}
+			if len(valueUsername) > 0 {
+				totalBackendsInUse++
+				_, ok := backendsInUse[valuePoolPid]
+				if !ok {
+					backendsInUse[valuePoolPid] = make(map[string]map[string]map[string]map[string]float64)
+				}
+				_, ok = backendsInUse[valuePoolPid][valuePoolId]
+				if !ok {
+					backendsInUse[valuePoolPid][valuePoolId] = make(map[string]map[string]map[string]float64)
+				}
+				_, ok = backendsInUse[valuePoolPid][valuePoolId][valueBackendId]
+				if !ok {
+					backendsInUse[valuePoolPid][valuePoolId][valueBackendId] = make(map[string]map[string]float64)
+				}
+				_, ok = backendsInUse[valuePoolPid][valuePoolId][valueBackendId][valueUsername]
+				if !ok {
+					backendsInUse[valuePoolPid][valuePoolId][valueBackendId][valueUsername] = make(map[string]float64)
+				}
+				backendsInUse[valuePoolPid][valuePoolId][valueBackendId][valueUsername][valueDatabase]++
+			}
+		}
 
-		// for poolPid, poolIds := range backendsInUse {
-		// 	var usedProcessBackends float64
+		for poolPid, poolIds := range backendsInUse {
+			var usedProcessBackends float64
 
-		// 	for poolId, backendIds := range poolIds {
-		// 		for backendId, userNames := range backendIds {
-		// 			for userName, dbNames := range userNames {
-		// 				for dbName, count := range dbNames {
+			for poolId, backendIds := range poolIds {
+				for backendId, userNames := range backendIds {
+					for userName, dbNames := range userNames {
+						for dbName, count := range dbNames {
 
-		// 					usedProcessBackends++
-		// 					variableLabels := []string{"pool_pid", "pool_id", "backend_id", "username", "database"}
-		// 					labels := []string{poolPid, poolId, backendId, userName, dbName}
-		// 					ch <- prometheus.MustNewConstMetric(
-		// 						prometheus.NewDesc(prometheus.BuildFQName("pgpool2", "", "backend_by_process_used"), "Number of backend connection slots in use", variableLabels, nil),
-		// 						prometheus.GaugeValue,
-		// 						count,
-		// 						labels...,
-		// 					)
+							usedProcessBackends++
+							variableLabels := []string{"pool_pid", "pool_id", "backend_id", "username", "database"}
+							labels := []string{poolPid, poolId, backendId, userName, dbName}
 
-		// 				}
-		// 			}
-		// 		}
-		// 	}
-		// 	variableLabels := []string{"pool_pid"}
-		// 	labels := []string{poolPid}
-		// 	ch <- prometheus.MustNewConstMetric(
-		// 		prometheus.NewDesc(prometheus.BuildFQName("pgpool2", "", "backend_by_process_used_ratio"), "Number of backend connection slots in use", variableLabels, nil),
-		// 		prometheus.GaugeValue,
-		// 		usedProcessBackends/totalBackendsByProcess[poolPid],
-		// 		labels...,
-		// 	)
-		// 	ch <- prometheus.MustNewConstMetric(
-		// 		prometheus.NewDesc(prometheus.BuildFQName("pgpool2", "", "backend_by_process_total"), "Number of backend connection slots in use", variableLabels, nil),
-		// 		prometheus.GaugeValue,
-		// 		totalBackendsByProcess[poolPid],
-		// 		labels...,
-		// 	)
-		// }
+							var attributes []attribute.KeyValue
+							for idx, label := range variableLabels {
+								var labelValue, _ = dbToString(labels[idx])
+								attributes = append(attributes, attribute.String(label, labelValue))
+							}
 
-		// ch <- prometheus.MustNewConstMetric(
-		// 	prometheus.NewDesc(prometheus.BuildFQName("pgpool2", "", "backend_total"), "Number of total possible backend connection slots", nil, nil),
-		// 	prometheus.GaugeValue,
-		// 	totalBackends,
-		// )
-		// ch <- prometheus.MustNewConstMetric(
-		// 	prometheus.NewDesc(prometheus.BuildFQName("pgpool2", "", "backend_used"), "Number of backend connection slots in use", nil, nil),
-		// 	prometheus.GaugeValue,
-		// 	totalBackendsInUse,
-		// )
-		// ch <- prometheus.MustNewConstMetric(
-		// 	prometheus.NewDesc(prometheus.BuildFQName("pgpool2", "", "backend_used_ratio"), "Ratio of backend connections in use to total backend connection slots", nil, nil),
-		// 	prometheus.GaugeValue,
-		// 	totalBackendsInUse/totalBackends,
-		// )
+							attributes = append(attributes, universalAttributes...)
+
+							mapping.columnMappings["backend_by_process_used"].gaugeMetric.Record(
+									ctx,
+									count,
+									metric.WithAttributes(attributes...),
+							)
+
+						}
+					}
+				}
+			}
+
+			var attributes []attribute.KeyValue
+			attributes = append(attributes, attribute.String("pool_pid", poolPid))
+			attributes = append(attributes, universalAttributes...)
+
+			mapping.columnMappings["backend_by_process_used_ratio"].gaugeMetric.Record(
+					ctx,
+					usedProcessBackends/totalBackendsByProcess[poolPid],
+					metric.WithAttributes(attributes...),
+			)
+			
+			mapping.columnMappings["backend_by_process_total"].gaugeMetric.Record(
+					ctx,
+					totalBackendsByProcess[poolPid],
+					metric.WithAttributes(attributes...),
+			)
+
+		}
+
+		mapping.columnMappings["backend_total"].gaugeMetric.Record(
+				ctx,
+				totalBackends,
+				metric.WithAttributes(universalAttributes...),
+		)
+	
+		mapping.columnMappings["backend_used"].gaugeMetric.Record(
+				ctx,
+				totalBackendsInUse,
+				metric.WithAttributes(universalAttributes...),
+		)
+
+		mapping.columnMappings["backend_used_ratio"].gaugeMetric.Record(
+				ctx,
+				totalBackendsInUse/totalBackends,
+				metric.WithAttributes(universalAttributes...),
+		)
 
 		return nonfatalErrors, nil
 	}
 
 	// Read from the result of "SHOW pool_processes"
 	if namespace == "pool_processes" {
-		// frontendByUserDb := make(map[string]map[string]int)
-		// var frontend_total float64
-		// var frontend_used float64
+		frontendByUserDb := make(map[string]map[string]int)
+		var frontend_total float64
+		var frontend_used float64
 
-		// for rows.Next() {
-		// 	err = rows.Scan(scanArgs...)
-		// 	if err != nil {
-		// 		return []error{}, errors.New(fmt.Sprintln("Error retrieving rows:", namespace, err))
-		// 	}
-		// 	frontend_total++
-		// 	// Loop over column names to find currently connected backend database
-		// 	var valueDatabase string
-		// 	var valueUsername string
-		// 	for idx, columnName := range columnNames {
-		// 		switch columnName {
-		// 		case "database":
-		// 			valueDatabase, _ = exp.dbToString(columnData[idx])
-		// 		case "username":
-		// 			valueUsername, _ = exp.dbToString(columnData[idx])
-		// 		}
-		// 	}
-		// 	if len(valueDatabase) > 0 && len(valueUsername) > 0 {
-		// 		frontend_used++
-		// 		dbCount, ok := frontendByUserDb[valueUsername]
-		// 		if !ok {
-		// 			dbCount = map[string]int{valueDatabase: 0}
-		// 		}
-		// 		dbCount[valueDatabase]++
-		// 		frontendByUserDb[valueUsername] = dbCount
-		// 	}
-		// }
+		for rows.Next() {
+			err = rows.Scan(scanArgs...)
+			if err != nil {
+				return []error{}, errors.New(fmt.Sprintln("Error retrieving rows:", namespace, err))
+			}
+			frontend_total++
+			// Loop over column names to find currently connected backend database
+			var valueDatabase string
+			var valueUsername string
+			for idx, columnName := range columnNames {
+				switch columnName {
+				case "database":
+					valueDatabase, _ = dbToString(columnData[idx])
+				case "username":
+					valueUsername, _ = dbToString(columnData[idx])
+				}
+			}
+			if len(valueDatabase) > 0 && len(valueUsername) > 0 {
+				frontend_used++
+				dbCount, ok := frontendByUserDb[valueUsername]
+				if !ok {
+					dbCount = map[string]int{valueDatabase: 0}
+				}
+				dbCount[valueDatabase]++
+				frontendByUserDb[valueUsername] = dbCount
+			}
+		}
 
-		// variableLabels := []string{"username", "database"}
-		// for userName, dbs := range frontendByUserDb {
-		// 	for dbName, count := range dbs {
-		// 		labels := []string{userName, dbName}
-		// 		ch <- prometheus.MustNewConstMetric(
-		// 			prometheus.NewDesc(prometheus.BuildFQName("pgpool2", "", "frontend_used"), "Number of used child processes", variableLabels, nil),
-		// 			prometheus.GaugeValue,
-		// 			float64(count),
-		// 			labels...,
-		// 		)
-		// 	}
-		// }
+		variableLabels := []string{"username", "database"}
+		for userName, dbs := range frontendByUserDb {
+			for dbName, count := range dbs {
+				labels := []string{userName, dbName}
 
-		// // Generate the metric for "pool_processes"
-		// ch <- prometheus.MustNewConstMetric(
-		// 	prometheus.NewDesc(prometheus.BuildFQName("pgpool2", "", "frontend_total"), "Number of total child processed", nil, nil),
-		// 	prometheus.GaugeValue,
-		// 	frontend_total,
-		// )
-		// ch <- prometheus.MustNewConstMetric(
-		// 	prometheus.NewDesc(prometheus.BuildFQName("pgpool2", "", "frontend_used_ratio"), "Ratio of child processes to total processes", nil, nil),
-		// 	prometheus.GaugeValue,
-		// 	frontend_used/frontend_total,
-		// )
+				var attributes []attribute.KeyValue
+				for idx, label := range variableLabels {
+					var labelValue, _ = dbToString(labels[idx])
+					attributes = append(attributes, attribute.String(label, labelValue))
+				}
+
+				attributes = append(attributes, universalAttributes...)
+
+				mapping.columnMappings["frontend_used"].gaugeMetric.Record(
+						ctx,
+						float64(count),
+						metric.WithAttributes(attributes...),
+				)
+
+			}
+		}
+
+		mapping.columnMappings["frontend_total"].gaugeMetric.Record(
+				ctx,
+				frontend_total,
+				metric.WithAttributes(universalAttributes...),
+		)
+
+		mapping.columnMappings["frontend_used_ratio"].gaugeMetric.Record(
+				ctx,
+				frontend_used/frontend_total,
+				metric.WithAttributes(universalAttributes...),
+		)
 
 		return nonfatalErrors, nil
 	}
@@ -784,7 +814,7 @@ func ping(db *sql.DB) error {
 }
 
 
-// Convert database.sql types to float64s for Prometheus consumption. Null types are mapped to NaN. string and []byte
+// Convert database.sql types to float64s for OpenTelemetry consumption. Null types are mapped to NaN. string and []byte
 // types are mapped as NaN and !ok
 func dbToFloat64(t interface{}) (float64, bool) {
 	switch v := t.(type) {
@@ -827,7 +857,7 @@ func dbToFloat64(t interface{}) (float64, bool) {
 	}
 }
 
-// Convert database.sql to string for Prometheus labels. Null types are mapped to empty strings.
+// Convert database.sql to string for OpenTelemetry labels. Null types are mapped to empty strings.
 func dbToString(t interface{}) (string, bool) {
 	switch v := t.(type) {
 	case int64:
