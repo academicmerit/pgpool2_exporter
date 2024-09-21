@@ -33,28 +33,36 @@ func main() {
 
     ctx := context.Background()
     var env = os.Getenv("ENVIRONMENT")
+    env, isEnvSet := os.LookupEnv("ENVIRONMENT")
 
-    response, err := http.Get(os.Getenv("ECS_CONTAINER_METADATA_URI_V4"))
+    ecsMetadataURI, isECSEnvSet := os.LookupEnv("ECS_CONTAINER_METADATA_URI_V4")
 
-    if err != nil {
-        fmt.Print(err.Error())
+    var attributes []attribute.KeyValue
+
+    if isECSEnvSet {
+        response, err := http.Get(ecsMetadataURI)
+
+        if err != nil {
+            fmt.Print(err.Error())
+        }
+
+        responseData, err := ioutil.ReadAll(response.Body)
+        if err != nil {
+            fmt.Print(err)
+        }
+
+        var result map[string]any
+        json.Unmarshal(responseData, &result)
+
+        labels := result["Labels"].(map[string]any)
+        arn := labels["com.amazonaws.ecs.task-arn"].(string)
+        taskId := arn[strings.LastIndex(arn, "/")+1:]
+
+        attributes = append(attributes, attribute.String("taskId", taskId))
     }
 
-    responseData, err := ioutil.ReadAll(response.Body)
-    if err != nil {
-        fmt.Print(err)
-    }
-
-    var result map[string]any
-    json.Unmarshal(responseData, &result)
-
-    labels := result["Labels"].(map[string]any)
-    arn := labels["com.amazonaws.ecs.task-arn"].(string)
-    taskId := arn[strings.LastIndex(arn, "/")+1:]
-
-    attributes := []attribute.KeyValue{
-        attribute.String("environment", env),
-        attribute.String("taskId", taskId),
+    if isEnvSet {
+        attributes = append(attributes, attribute.String("environment", env))
     }
 
     var dsn = os.Getenv("DATA_SOURCE_NAME")
