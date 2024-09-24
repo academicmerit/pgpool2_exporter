@@ -28,6 +28,8 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"slices"
+	// "reflect"
 	// "net/url"
 	_ "os"
 	"regexp"
@@ -555,6 +557,30 @@ func queryNamespaceMapping(ctx context.Context, db *sql.DB, namespace string, ma
 			if metricMapping, ok := mapping.columnMappings[columnName]; ok {
 				// Is this a metricy metric?
 				if metricMapping.discard {
+					continue
+				}
+
+				timeSinceColumns := []string{"last_health_check", "last_successful_health_check", "last_skip_health_check", "last_failed_health_check"}
+				if namespace == "pool_health_check_stats" && slices.Contains(timeSinceColumns, columnName) {
+					var timeSince float64
+					valueString, ok := dbToString(columnData[idx])
+					if !ok {
+						nonfatalErrors = append(nonfatalErrors, errors.New(fmt.Sprintln("Unexpected error parsing column: ", namespace, columnName, columnData[idx])))
+						timeSince = -1
+					} else {
+						dbValue, err := time.Parse(time.DateTime, valueString)
+						if err != nil {
+								log.Println("cannot parse using either layout:", err)
+						} else {
+							timeSince = time.Since(dbValue).Seconds()	
+						}
+					}
+
+					metricMapping.gaugeMetric.Record(
+						ctx,
+					 float64(timeSince),
+						metric.WithAttributes(attributes...),
+					)
 					continue
 				}
 
