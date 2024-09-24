@@ -1,46 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "Prometheus",
-      "label": "Prometheus",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
-  "__requires": [
-    {
-      "type": "panel",
-      "id": "gauge",
-      "name": "Gauge",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "9.1.6"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -66,7 +24,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 7,
+  "id": 107,
   "links": [
     {
       "asDropdown": false,
@@ -86,6 +44,7 @@
   "liveNow": false,
   "panels": [
     {
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -93,11 +52,15 @@
         "y": 0
       },
       "id": 28,
+      "panels": [],
       "title": "Row title",
       "type": "row"
     },
     {
-      "datasource": "Prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PAE45454D0EDB9216"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -144,10 +107,11 @@
       },
       "id": 4,
       "options": {
-        "colorMode": "background",
+        "colorMode": "value",
         "graphMode": "area",
         "justifyMode": "auto",
-        "orientation": "vertical",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -155,15 +119,20 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
       },
-      "pluginVersion": "9.1.6",
+      "pluginVersion": "11.2.0",
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PAE45454D0EDB9216"
+          },
           "editorMode": "builder",
           "exemplar": false,
-          "expr": "pgpool2_pool_nodes_status",
+          "expr": "pgpool2_pool_nodes_status{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "hide": false,
           "instant": true,
           "interval": "",
@@ -176,7 +145,10 @@
       "type": "stat"
     },
     {
-      "datasource": "Prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PAE45454D0EDB9216"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -214,6 +186,8 @@
       },
       "id": 2,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -224,16 +198,20 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {
           "titleSize": 1
         }
       },
-      "pluginVersion": "9.1.6",
+      "pluginVersion": "11.2.0",
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PAE45454D0EDB9216"
+          },
           "editorMode": "builder",
-          "expr": "pgpool2_frontend_used_ratio",
+          "expr": "pgpool2_frontend_used_ratio{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -243,18 +221,23 @@
       "type": "gauge"
     },
     {
-      "datasource": "Prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PAE45454D0EDB9216"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -263,6 +246,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -329,17 +313,23 @@
       "pluginVersion": "9.1.6",
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PAE45454D0EDB9216"
+          },
           "editorMode": "builder",
-          "expr": "pgpool2_frontend_used",
+          "expr": "pgpool2_frontend_used{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "legendFormat": "{{__name__}}",
           "range": true,
           "refId": "A"
         },
         {
-          "datasource": "Prometheus",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PAE45454D0EDB9216"
+          },
           "editorMode": "builder",
-          "expr": "pgpool2_frontend_total",
+          "expr": "pgpool2_frontend_total{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "hide": false,
           "legendFormat": "{{__name__}}",
           "range": true,
@@ -350,18 +340,23 @@
       "type": "timeseries"
     },
     {
-      "datasource": "Prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PAE45454D0EDB9216"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -370,6 +365,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -425,16 +421,25 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PAE45454D0EDB9216"
+          },
           "editorMode": "builder",
-          "expr": "pgpool2_pool_nodes_replication_delay{hostname=~\"$backend_nodes\"}",
+          "expr": "pgpool2_pool_nodes_replication_delay{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "legendFormat": "{{hostname}} ({{role}})",
           "range": true,
           "refId": "A"
         },
         {
-          "datasource": "Prometheus",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PAE45454D0EDB9216"
+          },
+          "expr": "",
           "hide": false,
+          "instant": false,
+          "range": true,
           "refId": "B"
         }
       ],
@@ -442,29 +447,37 @@
       "type": "timeseries"
     },
     {
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
         "y": 7
       },
-      "id": 26,
-      "title": "Error Message Counts",
+      "id": 64,
+      "panels": [],
+      "title": "Health Check Time Since Stats",
       "type": "row"
     },
     {
-      "datasource": "Prometheus",
+      "datasource": {
+        "default": false,
+        "type": "prometheus",
+        "uid": "PAE45454D0EDB9216"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -473,6 +486,424 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 66,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PAE45454D0EDB9216"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "exemplar": false,
+          "expr": "pgpool2_pool_health_check_stats_last_skip_health_check{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "{{taskId}} ({{role}})",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Last Skip",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "prometheus",
+        "uid": "PAE45454D0EDB9216"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 67,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PAE45454D0EDB9216"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "pgpool2_pool_health_check_stats_last_successful_health_check{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "{{taskId}} ({{role}})",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Last Successful",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "prometheus",
+        "uid": "PAE45454D0EDB9216"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
+      "id": 63,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "11.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PAE45454D0EDB9216"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "pgpool2_pool_health_check_stats_last_failed_health_check{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "{{taskId}} ({{role}})",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Last Failed",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "prometheus",
+        "uid": "PAE45454D0EDB9216"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 16
+      },
+      "id": 65,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PAE45454D0EDB9216"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "pgpool2_pool_health_check_stats_last_health_check{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "{{taskId}} ({{role}})",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        }
+      ],
+      "title": "Last HealthCheck",
+      "type": "timeseries"
+    },
+    {
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
+      "id": 26,
+      "title": "Error Message Counts",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "default": false,
+        "type": "prometheus",
+        "uid": "PAE45454D0EDB9216"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -506,7 +937,7 @@
         "h": 8,
         "w": 7,
         "x": 0,
-        "y": 8
+        "y": 25
       },
       "id": 12,
       "options": {
@@ -523,10 +954,13 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PAE45454D0EDB9216"
+          },
           "editorMode": "builder",
-          "expr": "pgpool2_pool_backend_stats_error_cnt{hostname=~\"$backend_nodes\"}",
-          "legendFormat": "{{hostname}} ({{role}})",
+          "expr": "pgpool2_pool_backend_stats_error_cnt{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
+          "legendFormat": "{{taskId}} ({{role}}) ({{role}})",
           "range": true,
           "refId": "A"
         }
@@ -535,18 +969,23 @@
       "type": "timeseries"
     },
     {
-      "datasource": "Prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PAE45454D0EDB9216"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -555,6 +994,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -588,7 +1028,7 @@
         "h": 8,
         "w": 7,
         "x": 7,
-        "y": 8
+        "y": 25
       },
       "id": 14,
       "options": {
@@ -605,10 +1045,13 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PAE45454D0EDB9216"
+          },
           "editorMode": "builder",
-          "expr": "pgpool2_pool_backend_stats_fatal_cnt{hostname=~\"$backend_nodes\"}",
-          "legendFormat": "{{hostname}} ({{role}})",
+          "expr": "pgpool2_pool_backend_stats_fatal_cnt{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
+          "legendFormat": "{{taskId}} ({{role}})",
           "range": true,
           "refId": "A"
         }
@@ -617,18 +1060,23 @@
       "type": "timeseries"
     },
     {
-      "datasource": "Prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PAE45454D0EDB9216"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -637,6 +1085,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -674,7 +1123,7 @@
         "h": 8,
         "w": 7,
         "x": 14,
-        "y": 8
+        "y": 25
       },
       "id": 16,
       "options": {
@@ -691,10 +1140,13 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PAE45454D0EDB9216"
+          },
           "editorMode": "builder",
-          "expr": "pgpool2_pool_backend_stats_panic_cnt{hostname=~\"$backend_nodes\"}",
-          "legendFormat": "{{hostname}} ({{role}})",
+          "expr": "pgpool2_pool_backend_stats_panic_cnt{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
+          "legendFormat": "{{taskId}} ({{role}})",
           "range": true,
           "refId": "A"
         }
@@ -707,25 +1159,30 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 33
       },
       "id": 24,
       "title": "SQL Command Statistics",
       "type": "row"
     },
     {
-      "datasource": "Prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PAE45454D0EDB9216"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -734,6 +1191,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -771,7 +1229,7 @@
         "h": 6,
         "w": 7,
         "x": 0,
-        "y": 17
+        "y": 34
       },
       "id": 30,
       "options": {
@@ -788,30 +1246,42 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PAE45454D0EDB9216"
+          },
+          "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "pgpool2_pool_backend_stats_select_cnt{hostname=~\"$backend_nodes\"}",
+          "expr": "pgpool2_pool_backend_stats_select_cnt{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
           "legendFormat": "{{hostname}} ({{role}})",
           "range": true,
-          "refId": "A"
+          "refId": "A",
+          "useBackend": false
         }
       ],
       "title": "SELECT statement counts",
       "type": "timeseries"
     },
     {
-      "datasource": "Prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PAE45454D0EDB9216"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -820,6 +1290,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -857,7 +1328,7 @@
         "h": 6,
         "w": 7,
         "x": 7,
-        "y": 17
+        "y": 34
       },
       "id": 36,
       "options": {
@@ -874,30 +1345,38 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PAE45454D0EDB9216"
+          },
+          "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "pgpool2_pool_backend_stats_delete_cnt{hostname=~\"$backend_nodes\"}",
+          "expr": "pgpool2_pool_backend_stats_delete_cnt{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
           "legendFormat": "{{hostname}} ({{role}})",
           "range": true,
-          "refId": "A"
+          "refId": "A",
+          "useBackend": false
         }
       ],
       "title": "DELETE statement counts",
       "type": "timeseries"
     },
     {
-      "datasource": "Prometheus",
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -906,6 +1385,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -943,9 +1423,9 @@
         "h": 6,
         "w": 7,
         "x": 14,
-        "y": 17
+        "y": 34
       },
-      "id": 34,
+      "id": 40,
       "options": {
         "legend": {
           "calcs": [],
@@ -960,30 +1440,35 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": "prometheus",
           "editorMode": "builder",
-          "expr": "pgpool2_pool_backend_stats_insert_cnt{hostname=~\"$backend_nodes\"}",
+          "expr": "pgpool2_pool_backend_stats_other_cnt{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "legendFormat": "{{hostname}} ({{role}})",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "INSERT statement counts",
+      "title": "Other statement counts",
       "type": "timeseries"
     },
     {
-      "datasource": "Prometheus",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PAE45454D0EDB9216"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -992,6 +1477,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1029,7 +1515,7 @@
         "h": 6,
         "w": 7,
         "x": 0,
-        "y": 23
+        "y": 40
       },
       "id": 32,
       "options": {
@@ -1046,9 +1532,12 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PAE45454D0EDB9216"
+          },
           "editorMode": "builder",
-          "expr": "pgpool2_pool_backend_stats_update_cnt{hostname=~\"$backend_nodes\"}",
+          "expr": "pgpool2_pool_backend_stats_update_cnt{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "legendFormat": "{{hostname}} ({{role}})",
           "range": true,
           "refId": "A"
@@ -1064,11 +1553,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1077,6 +1568,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1114,7 +1606,7 @@
         "h": 6,
         "w": 7,
         "x": 7,
-        "y": 23
+        "y": 40
       },
       "id": 38,
       "options": {
@@ -1131,9 +1623,9 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": "prometheus",
           "editorMode": "builder",
-          "expr": "pgpool2_pool_backend_stats_ddl_cnt{hostname=~\"$backend_nodes\"}",
+          "expr": "pgpool2_pool_backend_stats_ddl_cnt{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "legendFormat": "{{hostname}} ({{role}})",
           "range": true,
           "refId": "A"
@@ -1143,17 +1635,23 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PAE45454D0EDB9216"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1162,6 +1660,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1199,9 +1698,9 @@
         "h": 6,
         "w": 7,
         "x": 14,
-        "y": 23
+        "y": 40
       },
-      "id": 40,
+      "id": 34,
       "options": {
         "legend": {
           "calcs": [],
@@ -1216,25 +1715,34 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PAE45454D0EDB9216"
+          },
+          "disableTextWrap": false,
           "editorMode": "builder",
-          "expr": "pgpool2_pool_backend_stats_other_cnt{hostname=~\"$backend_nodes\"}",
+          "expr": "pgpool2_pool_backend_stats_insert_cnt{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
           "legendFormat": "{{hostname}} ({{role}})",
           "range": true,
-          "refId": "A"
+          "refId": "A",
+          "useBackend": false
         }
       ],
-      "title": "Other statement counts",
+      "title": "INSERT statement counts",
       "type": "timeseries"
     },
     {
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 46
       },
       "id": 22,
+      "panels": [],
       "title": "Row title",
       "type": "row"
     },
@@ -1245,11 +1753,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1258,6 +1768,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1295,7 +1806,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 30
+        "y": 47
       },
       "id": 52,
       "options": {
@@ -1312,9 +1823,9 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": "prometheus",
           "editorMode": "builder",
-          "expr": "pgpool2_pool_health_check_stats_total_count{hostname=~\"$backend_nodes\"}",
+          "expr": "pgpool2_pool_health_check_stats_total_count{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "legendFormat": "{{hostname}} ({{role}})",
           "range": true,
           "refId": "A"
@@ -1330,11 +1841,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1343,6 +1856,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1380,7 +1894,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 30
+        "y": 47
       },
       "id": 56,
       "options": {
@@ -1397,9 +1911,9 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": "prometheus",
           "editorMode": "builder",
-          "expr": "pgpool2_pool_health_check_stats_success_count{hostname=~\"$backend_nodes\"}",
+          "expr": "pgpool2_pool_health_check_stats_success_count{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "legendFormat": "{{hostname}} ({{role}})",
           "range": true,
           "refId": "A"
@@ -1415,11 +1929,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1428,6 +1944,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1465,7 +1982,7 @@
         "h": 5,
         "w": 4,
         "x": 8,
-        "y": 30
+        "y": 47
       },
       "id": 58,
       "options": {
@@ -1482,9 +1999,9 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": "prometheus",
           "editorMode": "builder",
-          "expr": "pgpool2_pool_health_check_stats_fail_count{hostname=~\"$backend_nodes\"}",
+          "expr": "pgpool2_pool_health_check_stats_fail_count{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "legendFormat": "{{hostname}} ({{role}})",
           "range": true,
           "refId": "A"
@@ -1500,11 +2017,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1513,6 +2032,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1550,7 +2070,7 @@
         "h": 5,
         "w": 4,
         "x": 12,
-        "y": 30
+        "y": 47
       },
       "id": 60,
       "options": {
@@ -1567,9 +2087,9 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": "prometheus",
           "editorMode": "builder",
-          "expr": "pgpool2_pool_health_check_stats_skip_count{hostname=~\"$backend_nodes\"}",
+          "expr": "pgpool2_pool_health_check_stats_skip_count{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "legendFormat": "{{hostname}} ({{role}})",
           "range": true,
           "refId": "A"
@@ -1585,11 +2105,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1598,6 +2120,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1627,7 +2150,8 @@
                 "value": 80
               }
             ]
-          }
+          },
+          "unit": "ms"
         },
         "overrides": []
       },
@@ -1635,9 +2159,9 @@
         "h": 5,
         "w": 4,
         "x": 16,
-        "y": 30
+        "y": 47
       },
-      "id": 48,
+      "id": 44,
       "options": {
         "legend": {
           "calcs": [],
@@ -1652,15 +2176,15 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": "prometheus",
           "editorMode": "builder",
-          "expr": "pgpool2_pool_health_check_stats_retry_count{hostname=~\"$backend_nodes\"}",
+          "expr": "pgpool2_pool_health_check_stats_max_duration{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "legendFormat": "{{hostname}} ({{role}})",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Number of retried health check",
+      "title": "Maximum health check duration",
       "type": "timeseries"
     },
     {
@@ -1670,11 +2194,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1683,6 +2209,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1720,7 +2247,7 @@
         "h": 5,
         "w": 4,
         "x": 0,
-        "y": 35
+        "y": 52
       },
       "id": 50,
       "options": {
@@ -1737,9 +2264,9 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": "prometheus",
           "editorMode": "builder",
-          "expr": "pgpool2_pool_health_check_stats_max_retry_count{hostname=~\"$backend_nodes\"}",
+          "expr": "pgpool2_pool_health_check_stats_max_retry_count{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "legendFormat": "{{hostname}} ({{role}})",
           "range": true,
           "refId": "A"
@@ -1755,11 +2282,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1768,6 +2297,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1805,7 +2335,7 @@
         "h": 5,
         "w": 4,
         "x": 4,
-        "y": 35
+        "y": 52
       },
       "id": 54,
       "options": {
@@ -1822,9 +2352,9 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": "prometheus",
           "editorMode": "builder",
-          "expr": "pgpool2_pool_health_check_stats_average_retry_count{hostname=~\"$backend_nodes\"}",
+          "expr": "pgpool2_pool_health_check_stats_average_retry_count{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "legendFormat": "{{hostname}} ({{role}})",
           "range": true,
           "refId": "A"
@@ -1840,11 +2370,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1853,6 +2385,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1891,7 +2424,7 @@
         "h": 5,
         "w": 4,
         "x": 8,
-        "y": 35
+        "y": 52
       },
       "id": 42,
       "options": {
@@ -1908,9 +2441,9 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": "prometheus",
           "editorMode": "builder",
-          "expr": "pgpool2_pool_health_check_stats_average_duration{hostname=~\"$backend_nodes\"}",
+          "expr": "pgpool2_pool_health_check_stats_average_duration{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "legendFormat": "{{hostname}} ({{role}})",
           "range": true,
           "refId": "A"
@@ -1926,11 +2459,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -1939,6 +2474,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -1977,7 +2513,7 @@
         "h": 5,
         "w": 4,
         "x": 12,
-        "y": 35
+        "y": 52
       },
       "id": 46,
       "options": {
@@ -1994,9 +2530,9 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": "prometheus",
           "editorMode": "builder",
-          "expr": "pgpool2_pool_health_check_stats_min_duration{hostname=~\"$backend_nodes\"}",
+          "expr": "pgpool2_pool_health_check_stats_min_duration{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "legendFormat": "{{hostname}} ({{role}})",
           "range": true,
           "refId": "A"
@@ -2012,11 +2548,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -2025,6 +2563,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 1,
             "pointSize": 5,
@@ -2054,8 +2593,7 @@
                 "value": 80
               }
             ]
-          },
-          "unit": "ms"
+          }
         },
         "overrides": []
       },
@@ -2063,9 +2601,9 @@
         "h": 5,
         "w": 4,
         "x": 16,
-        "y": 35
+        "y": 52
       },
-      "id": 44,
+      "id": 48,
       "options": {
         "legend": {
           "calcs": [],
@@ -2080,15 +2618,15 @@
       },
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": "prometheus",
           "editorMode": "builder",
-          "expr": "pgpool2_pool_health_check_stats_max_duration{hostname=~\"$backend_nodes\"}",
+          "expr": "pgpool2_pool_health_check_stats_retry_count{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "legendFormat": "{{hostname}} ({{role}})",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Maximum health check duration",
+      "title": "Number of retried health check",
       "type": "timeseries"
     },
     {
@@ -2097,7 +2635,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 40
+        "y": 57
       },
       "id": 20,
       "panels": [],
@@ -2117,7 +2655,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               }
             ]
           },
@@ -2129,10 +2668,12 @@
         "h": 4,
         "w": 4,
         "x": 0,
-        "y": 41
+        "y": 58
       },
       "id": 62,
       "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -2142,14 +2683,15 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
-      "pluginVersion": "9.1.6",
+      "pluginVersion": "11.2.0",
       "targets": [
         {
-          "datasource": "Prometheus",
+          "datasource": "prometheus",
           "editorMode": "builder",
-          "expr": "pgpool2_pool_cache_cache_hit_ratio",
+          "expr": "pgpool2_pool_cache_cache_hit_ratio{taskId=~\"$ECSTaskID\", environment=\"$Environment\"}",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -2159,35 +2701,62 @@
       "type": "gauge"
     }
   ],
-  "refresh": false,
-  "schemaVersion": 37,
-  "style": "dark",
+  "refresh": "",
+  "schemaVersion": 39,
   "tags": [
     "pgpool"
   ],
   "templating": {
     "list": [
       {
-        "allValue": ".*",
         "current": {
           "selected": true,
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "text": "perf",
+          "value": "perf"
         },
-        "datasource": "Prometheus",
-        "definition": "label_values(pgpool2_pool_nodes_status{}, hostname)",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PAE45454D0EDB9216"
+        },
+        "definition": "label_values(environment)",
         "hide": 0,
-        "includeAll": true,
-        "multi": true,
-        "name": "backend_nodes",
+        "includeAll": false,
+        "label": "environment",
+        "multi": false,
+        "name": "Environment",
         "options": [],
         "query": {
-          "query": "label_values(pgpool2_pool_nodes_status{}, hostname)",
-          "refId": "StandardVariableQuery"
+          "qryType": 1,
+          "query": "label_values(environment)",
+          "refId": "prometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "allValue": "",
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "PAE45454D0EDB9216"
+        },
+        "definition": "label_values(taskId)",
+        "hide": 0,
+        "includeAll": true,
+        "multi": false,
+        "name": "ECSTaskID",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(taskId)",
+          "refId": "prometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
         "regex": "",
@@ -2198,13 +2767,13 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Pgpool-II",
   "uid": "KN5pOCn4g",
-  "version": 1,
+  "version": 50,
   "weekStart": ""
 }
