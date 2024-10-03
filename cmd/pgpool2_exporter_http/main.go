@@ -58,11 +58,11 @@ func main() {
         arn := labels["com.amazonaws.ecs.task-arn"].(string)
         taskId := arn[strings.LastIndex(arn, "/")+1:]
 
-        attributes = append(attributes, attribute.String("taskId", taskId))
+        attributes = append(attributes, attribute.String("ECS_TASK_ID", taskId))
     }
 
     if isEnvSet {
-        attributes = append(attributes, attribute.String("environment", env))
+        attributes = append(attributes, attribute.String("env", env))
     }
 
     var dsn = os.Getenv("DATA_SOURCE_NAME")
@@ -75,6 +75,20 @@ func main() {
 
 		dsn = "postgresql://" + ui + "@" + uri
 	}
+    
+    candence, isCadenceSet := os.LookupEnv("PERIODIC_EXPORT_CADENCE")
+
+    if !isCadenceSet {
+        // by default if a cadence is not set, export metrics every 30 seconds
+        candence = "30s"
+    }
+
+    cadenceDuration, err := time.ParseDuration(candence)
+
+    if err != nil {
+        fmt.Printf("Failed to cast PERIODIC_EXPORT_CADENCE into time.Duration type: %v\n", err)
+        return
+    }
 
     // Create the custom exporter
     exporter, err := httpexp.NewCustomExporter(ctx, dsn, attributes)
@@ -84,7 +98,7 @@ func main() {
     }
 
     // Create a PeriodicReader that exports every 30 seconds
-    periodicReader := metric.NewPeriodicReader(exporter, metric.WithInterval(30*time.Second))
+    periodicReader := metric.NewPeriodicReader(exporter, metric.WithInterval(cadenceDuration))
 
     meterProvider := metric.NewMeterProvider(metric.WithReader(periodicReader),)
 
