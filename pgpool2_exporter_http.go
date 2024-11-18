@@ -725,7 +725,6 @@ func (e *Exporter) Export(ctx context.Context, res *metricdata.ResourceMetrics) 
 		metric.WithAttributes(e.universalAttributes...),
 )
 
-	// Log the metrics export count and duration
 	log.Println("Exporting metrics...")
 
 	// Call the original exporter
