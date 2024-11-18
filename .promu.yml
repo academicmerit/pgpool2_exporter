@@ -2,11 +2,11 @@ go:
     version: 1.22
     cgo: false
 repository:
-    path: github.com/pgpool/pgpool2_exporter
+    path: github.com/VincentHokie/pgpool2_exporter
 build:
     binaries:
       - name: pgpool2_exporter
-        path: ./cmd/pgpool2_exporter
+        path: ./cmd/pgpool2_exporter_http
     flags: -a -tags 'netgo static_build'
     ldflags: |
         -X github.com/prometheus/common/version.Version={{.Version}}
